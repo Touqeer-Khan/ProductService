@@ -26,8 +26,9 @@ public class ProductController {
     }
     @GetMapping()
     public List<Product> getAllProducts(){
+//        return null;
 
-        return null;
+        return productService.getAllProducts();
     }
     @PostMapping("/{id}")
     public Product updateProduct(@PathVariable("id") long productId,
