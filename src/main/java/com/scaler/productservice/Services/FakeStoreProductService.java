@@ -1,5 +1,6 @@
 package com.scaler.productservice.Services;
 
+import com.scaler.productservice.Exceptions.ProductNotFoundException;
 import com.scaler.productservice.dtos.FakeStoreDtos;
 import com.scaler.productservice.models.Category;
 import com.scaler.productservice.models.Product;
@@ -35,12 +36,18 @@ public class FakeStoreProductService implements ProductService{
 
 
     @Override
-    public Product getProductById(Long productId) {
-
-        FakeStoreDtos fakeStoreDtos= restTemplate.
-                            getForObject("https://fakestoreapi.com/products/"
-                            + productId,
-                            FakeStoreDtos.class);
+    public Product getProductById(Long productId) throws ProductNotFoundException {
+//        FakeStoreDtos fakeStoreDtos= restTemplate.
+//                            getForObject("https://fakestoreapi.com/products/"
+//                            + productId,
+//                            FakeStoreDtos.class);
+//        return convertFakeStoreDtosToProduct(fakeStoreDtos);
+        FakeStoreDtos fakeStoreDtos=restTemplate.getForObject(
+                "https://fakestoreapi.com/products/"
+                + productId , FakeStoreDtos.class);
+        if (fakeStoreDtos==null){
+            throw new ProductNotFoundException("Product with id"+ productId +"doenn't exist");
+        }
         return convertFakeStoreDtosToProduct(fakeStoreDtos);
     }
 
